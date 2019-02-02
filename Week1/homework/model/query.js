@@ -2,9 +2,33 @@ const yargs = require("yargs");
 const fs = require("fs");
 const path = require("path");
 
+const countryData = [
+  [null, "Sweden", "SE", "Europe", 9900000],
+  [null, "Finland", "FI", "Europe", 5500000],
+  [null, "Lebanon", "LE", "Asia", 4000000],
+  [null, "Egypt", "EG", "Africa", 99000000],
+  [null, "Russia", "RS", "Asia", 142000000]
+];
+const countryQuery =
+  "INSERT INTO country (ID, Name, Country_Code, Continent, Population) VALUES ?";
+const cityData = [
+  [null, "Stockholm", "SE", 960000],
+  [null, "Helsinki", "FI", 631696],
+  [null, "Beirut", "LE", 2200000],
+  [null, "Cairo", "EG", 42000000],
+  [null, "Moscow", "RS", 11920000]
+];
+const cityQuery =
+  "INSERT INTO city (ID, Name,Country_Code, Population) VALUES ?";
 function commandFunc(con) {
   var argv = yargs
     .command("install", "Install world.sql with tables and data")
+    .command("new_database", "Create the new database with name world")
+    .command(
+      "new_table",
+      "Create the new tables country & city for world database"
+    )
+    .command("insert_data", "Insert some data into both table")
     .command(
       "countries",
       "list of countries with population more than 8 million"
@@ -27,6 +51,7 @@ function commandFunc(con) {
     .help().argv;
 
   let command = argv._[0];
+
   if (command === "install") {
     let queries = fs
       .readFileSync(path.join(__dirname, "./world.sql"))
@@ -34,6 +59,51 @@ function commandFunc(con) {
     con.query(queries, err => {
       if (err) throw err;
       console.log("Successfully Imported!!");
+    });
+  } else if (command === "new_database") {
+    console.log("=========================");
+    console.log("Create the new database with name world");
+    console.log("=========================");
+    con.query("CREATE DATABASE IF NOT EXISTS world", (error, result) => {
+      if (error) throw error;
+      console.log("Database created !!!");
+    });
+  } else if (command === "new_table") {
+    con.query("USE world", err => {
+      if (err) throw err;
+    });
+    console.log("=========================");
+    console.log("Create the new country & city table in the world database");
+    console.log("=========================");
+    con.query(
+      "CREATE TABLE if not exists country (ID int NOT NULL AUTO_INCREMENT, Name varchar(50), Country_Code varchar(52), Continent varchar(52), Population INT, PRIMARY KEY(ID))",
+      (error, result) => {
+        if (error) throw error;
+        console.log("Country Table created !!!");
+      }
+    );
+    con.query(
+      "CREATE TABLE if not exists city (ID int NOT NULL AUTO_INCREMENT, Name varchar(50), Country_Code varchar(52), Population INT, PRIMARY KEY(ID))",
+      (error, result) => {
+        if (error) throw error;
+        console.log("====================================");
+        console.log("City Table created !!!");
+      }
+    );
+  } else if (command === "insert_data") {
+    con.query("USE world", err => {
+      if (err) throw err;
+      console.log("Database changed to World");
+    });
+    con.query(countryQuery, [countryData], err => {
+      if (err) throw err;
+      console.log("====================================");
+      console.log("Country Data insert successful !!!");
+    });
+    con.query(cityQuery, [cityData], err => {
+      if (err) throw err;
+      console.log("====================================");
+      console.log("City data insert successful !!!");
     });
   } else if (command === "countries") {
     console.log("=========================");

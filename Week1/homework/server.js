@@ -26,6 +26,6 @@ connection.connect(err => {
 });
 // Select the world
 connection.query("USE new_world", error => {
-  error ? error : console.log("Database changed to world");
+  error ? error : console.log("Database changed to new_world");
   query(connection);
 });
