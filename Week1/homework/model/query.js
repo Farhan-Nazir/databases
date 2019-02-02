@@ -119,6 +119,7 @@ function commandFunc(con) {
           );
           console.log("-----------------------------------------------");
         }
+        console.log("Total Countries",result.length);
       }
     );
   } else if (command === "land") {
@@ -133,6 +134,7 @@ function commandFunc(con) {
           console.log(`${result[i].Name}`);
           console.log("-----------------------------------------------");
         }
+        console.log("Total Countries",result.length);
       }
     );
   } else if (command === "cities") {
@@ -145,8 +147,10 @@ function commandFunc(con) {
         if (error) throw error;
         for (let i in result) {
           console.log(`${result[i].Name}`);
+          console.log("-----------------------------------------------");
         }
-        console.log("-----------------------------------------------");
+        
+        console.log("Total Cities",result.length);
       }
     );
   } else if (command === "europe") {
