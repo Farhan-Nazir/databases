@@ -2,7 +2,7 @@
 `node . help`
 
 ##### Some commands
-Commands:
+`Commands:
   install           Install world.sql with tables and data
   countries         list of countries with population more than 8 million
   land              list of Countires with land in their name
@@ -15,4 +15,4 @@ Commands:
   Rotterdam         population of Rotterdam
   desc_10           10 countries order by their surface area
   populated_cities  10 most populated cities
-  world_population  show the total population of world
+  world_population  show the total population of world`
