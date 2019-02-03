@@ -110,7 +110,7 @@ function commandFunc(con) {
     console.log("countries with population more than 8 million");
     console.log("=========================");
     con.query(
-      "SELECT * from country WHERE Population > 8000000",
+      "SELECT Name, Population from country WHERE Population > 8000000",
       (error, result) => {
         if (error) throw error;
         for (let i in result) {
@@ -124,7 +124,7 @@ function commandFunc(con) {
     );
   } else if (command === "land") {
     con.query(
-      'SELECT Name FROM country WHERE Name LIKE "%land%"',
+      'SELECT Name FROM country WHERE Name LIKE "%land"',
       (error, result) => {
         if (error) throw error;
         console.log("=========================");
@@ -243,10 +243,10 @@ function commandFunc(con) {
       }
     );
   } else if (command === "world_population") {
-    con.query("SELECT SUM(Population) FROM country", (error, result) => {
+    con.query("SELECT SUM(Population) as 'Total' FROM country", (error, result) => {
       console.log("=========================");
       if (error) throw error;
-      console.log(`Total Population of World: ${JSON.stringify(result[0])}`);
+      console.log(`Total Population of World: ${JSON.stringify(result[0].Total)}`);
       console.log("=========================");
     });
   } else {
